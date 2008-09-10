@@ -1,0 +1,29 @@
+h2. Delegate Temporal
+
+This Rails plugin allows you to continue to use multiparameter attributes when the actual
+attribute is delegated to another object.
+
+h2. The problem
+
+<pre><code>class Foo < ActiveRecord::Base
+  ...
+  delegate :start_time, :start_time=, :to => :appointment
+end
+
+@foo.attributes = { "start_time(1i)" => "2008", "start_time(2i)" => "9", ... }
+# => Error!</code></pre>
+
+The error occurs because Rails tries to look up the "start_time" column in the database (in order to
+find out information about its type), but because we are delegating it doesn't exist.
+
+h2. The solution
+
+Install this plugin, and then:
+
+<pre><code>class Foo < ActiveRecord::Base
+  ...
+  delegate_temporal :start_time, :to => :appointment
+end
+
+@foo.attributes = { "start_time(1i)" => "2008", "start_time(2i)" => "9", ... }
+# => Yay, it works!</code></pre>
