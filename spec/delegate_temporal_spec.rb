@@ -30,4 +30,11 @@ describe "An object with a temporal delegation of its 'start_time' to an 'appoin
     
     @object.attributes = attrs
   end
+  
+  it "should call the apppointment's attributes= method if there are no parameters which need to be delegated" do
+    @appointment.expects(:attributes=).never
+    @object.expects(:dont_delegate=).with("this")
+    
+    @object.attributes = { :dont_delegate => "this" }
+  end
 end
